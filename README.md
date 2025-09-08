@@ -2,6 +2,13 @@
 
 This repository contains my `zsh` environment setup.
 
+## Prequisits
+
+This script assumes that the following are installed:
+
+1. [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script)
+2. [pnpm](https://pnpm.io/installation)
+
 ## Setup
 
 Run the setup script to automatically create the symbolic link for `~/.zshrc`
