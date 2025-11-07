@@ -9,6 +9,21 @@
 CUSTOM_PATHS="$HOME/.zsh_paths"
 [[ -f "$CUSTOM_PATHS" ]] && source "$CUSTOM_PATHS"
 
+# --- nvm ---
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+
+
+# --- pnpm ---
+
+export PNPM_HOME="${HOME}/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+
 # --- Command History ---
 
 export HISTFILE=~/.zsh_history
@@ -126,26 +141,6 @@ then
     export PATH="$RUBY_PATH/bin:$PATH"
   fi
 fi
-
-# --- nvm (lazy loading) ---
-
-export NVM_DIR="$HOME/.nvm"
-
-# Lazy load nvm for faster shell startup
-nvm() {
-  unset -f nvm
-  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-  nvm "$@"
-}
-
-
-# --- pnpm ---
-
-export PNPM_HOME="${HOME}/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
 
 # --- Prompt Completion ---
 
