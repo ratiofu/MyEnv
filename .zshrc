@@ -131,13 +131,8 @@ fi
 
 export NVM_DIR="$HOME/.nvm"
 
-# Lazy load nvm for faster shell startup
-nvm() {
-  unset -f nvm
-  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-  nvm "$@"
-}
-
+# nvm
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 
 # --- pnpm ---
 
@@ -180,3 +175,7 @@ alias gti='git commit -m'
 alias gta='git add -A'
 alias gtu='git remote prune origin && git pull --all'
 alias gto='git checkout'
+
+# --- local binaries ---
+
+[[ -s "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
