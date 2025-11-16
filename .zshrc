@@ -179,3 +179,7 @@ alias gto='git checkout'
 # --- local binaries ---
 
 [[ -s "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
+
+# --- ngrok shell completion ---
+
+[[ -n "$(command -v ngrok)" ]] && eval "$(ngrok completion)"
