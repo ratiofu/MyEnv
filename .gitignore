@@ -2,3 +2,4 @@
 .idea
 .home
 *.bak
+.DS_Store

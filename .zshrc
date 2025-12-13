@@ -159,12 +159,32 @@ command -v pnpm &>/dev/null && eval "$(pnpm completion zsh)"
 
 # Clear merged branches that are gone at the remote origin
 clrb() {
-  local tempfile
-  tempfile=$(mktemp /tmp/merged-branches-XXXXXX)
-  git branch -vv | awk '/: gone]/{print $1}' > "${tempfile}"
-  "${EDITOR:-vi}" "${tempfile}"
-  xargs git branch -df < "${tempfile}"
-  rm -f "${tempfile}"
+  local b base c head
+  # currently checked-out branch
+  head=$(git symbolic-ref --short HEAD)
+
+  for b in $(git for-each-ref --format='%(refname:short)' refs/heads); do
+    # never delete current or protected branches
+    [[ "$b" == "$head" || "$b" == main || "$b" == master || "$b" == develop ]] && continue
+    # skip branches with remotes
+    git rev-parse --abbrev-ref "$b@{upstream}" >/dev/null 2>&1 && continue
+
+    base=""
+    # scan recent commits for a squash-merge equivalent
+    for c in $(git log -n 100 --pretty=%H); do
+      # identical trees → found merge commit
+      git diff --quiet "$c" "$b" && { base="$c"; break; }
+    done
+    [[ -z "$base" ]] && base="$head" # fallback: compare against current branch tip
+
+    if git diff --quiet "$base" "$b"; then       # no file-content differences
+      git branch -D "$b" && echo "deleted $b"
+    else
+      printf "delete %s? [y/N] " "$b"
+      read -r ans
+      [[ "$ans" =~ ^[Yy] ]] && git branch -D "$b" && echo "deleted $b"
+    fi
+  done
 }
 
 # --- Aliases ---
