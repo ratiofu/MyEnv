@@ -195,6 +195,7 @@ alias gti='git commit -m'
 alias gta='git add -A'
 alias gtu='git remote prune origin && git pull --all'
 alias gto='git checkout'
+alias loc='cloc --exclude-dir=node_modules,generated,build,build-cache,.idea,.gradle,.ci-root-home,storybook-static .'
 
 # --- local binaries ---
 
