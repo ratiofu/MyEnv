@@ -143,17 +143,14 @@ then
 fi
 
 # --- Prompt Completion ---
-
 autoload -Uz compinit
 compinit
 
 # Only load pnpm completion if pnpm is available
 command -v pnpm &>/dev/null && eval "$(pnpm completion zsh)"
 
-
 # --- direnv ---
-
-[[ -n "$(command -v direnv)" ]] && eval "$(direnv hook zsh)"
+command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
 
 # --- Shortcuts ---
 
@@ -198,9 +195,7 @@ alias gto='git checkout'
 alias loc='cloc --exclude-dir=node_modules,generated,build,build-cache,.idea,.gradle,.ci-root-home,storybook-static .'
 
 # --- local binaries ---
-
 [[ -s "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 
 # --- ngrok shell completion ---
-
-[[ -n "$(command -v ngrok)" ]] && eval "$(ngrok completion)"
+command -v ngrok &>/dev/null && eval "$(ngrok completion)"
