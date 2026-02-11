@@ -184,6 +184,29 @@ clrb() {
   done
 }
 
+# --- Tools ---
+
+# Wrapper for git worktree add to handle branch naming and validation
+git_worktree_add_wrapper() {
+  local prefix=""
+
+  # Parse optional prefix flag
+  if [[ "$1" == "-p" ]]; then
+    prefix="$2"
+    shift 2
+  fi
+
+  local branch_name="$1"
+
+  if [[ -z "$branch_name" ]]; then
+    echo "Error: Branch name is required."
+    return 1
+  fi
+
+  local full_name="${prefix}${branch_name}"
+  git worktree add "../${full_name}" -b "${full_name}"
+}
+
 # --- Aliases ---
 
 alias l='ls -halt'
@@ -195,6 +218,10 @@ alias gto='git checkout'
 alias loc='cloc --exclude-dir=node_modules,generated,build,build-cache,.idea,.gradle,.ci-root-home,storybook-static .'
 alias bzt='bazel test --test_output=errors --nocache_test_results'
 alias bba='bazel build //...'
+alias gwa='git_worktree_add_wrapper'
+alias gwatj='git_worktree_add_wrapper -p dev-tj-'
+alias gwl='git worktree list'
+alias gwd='git worktree remove'
 
 # --- local binaries ---
 [[ -s "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
