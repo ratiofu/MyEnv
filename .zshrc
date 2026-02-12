@@ -204,7 +204,14 @@ git_worktree_add_wrapper() {
   fi
 
   local full_name="${prefix}${branch_name}"
-  git worktree add "../${full_name}" -b "${full_name}"
+
+  if git rev-parse --verify "${full_name}" >/dev/null 2>&1; then
+    echo "Branch '${full_name}' already exists. Adding worktree for existing branch..."
+    git worktree add "../${full_name}" "${full_name}"
+  else
+    echo "Creating new branch '${full_name}' and adding worktree..."
+    git worktree add "../${full_name}" -b "${full_name}"
+  fi
 }
 
 # --- Aliases ---
