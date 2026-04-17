@@ -3,12 +3,6 @@
 # shellcheck disable=SC1090
 [[ "$TERM_PROGRAM" == "kiro" ]] && source "$(kiro --locate-shell-integration-path zsh)"
 
-# --- Path ---
-
-# Source custom paths if available
-CUSTOM_PATHS="$HOME/.zsh_paths"
-[[ -f "$CUSTOM_PATHS" ]] && source "$CUSTOM_PATHS"
-
 # --- nvm ---
 
 export NVM_DIR="$HOME/.nvm"
@@ -146,7 +140,7 @@ fi
 autoload -Uz compinit
 compinit
 
-# Only load pnpm completion if pnpm is available
+# --- pnpm completion ---
 command -v pnpm &>/dev/null && eval "$(pnpm completion zsh)"
 
 # --- direnv ---
@@ -215,7 +209,6 @@ git_worktree_add_wrapper() {
 }
 
 # --- Aliases ---
-
 alias l='ls -halt'
 alias gts='git status'
 alias gti='git commit -m'
@@ -230,8 +223,21 @@ alias gwatj='git_worktree_add_wrapper -p dev-tj-'
 alias gwl='git worktree list'
 alias gwd='git worktree remove'
 
+# --- Custom Aliases ---
+CUSTOM_ALIASES="$HOME/.zsh_aliases"
+[[ -f "$CUSTOM_ALIASES" ]] && source "$CUSTOM_ALIASES"
+
 # --- local binaries ---
 [[ -s "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 
 # --- ngrok shell completion ---
 command -v ngrok &>/dev/null && eval "$(ngrok completion)"
+
+# --- bun completions ---
+[ -s "/Users/tj/.bun/_bun" ] && source "/Users/tj/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# --- Custom Path ---
+CUSTOM_PATHS="$HOME/.zsh_paths"
+[[ -f "$CUSTOM_PATHS" ]] && source "$CUSTOM_PATHS"
