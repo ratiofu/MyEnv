@@ -119,10 +119,14 @@ venv_tag() {
   [[ -n "$VIRTUAL_ENV" ]] && print -n "%F{130}($(basename "$VIRTUAL_ENV"))%f "
 }
 
-# Prompt: [venv] [git-info] current-directory %; expansion omitted on purpose
-# shellcheck disable=SC2016
-export PROMPT='$(venv_tag)${vcs_info_msg_0_} %F{13}$(prompt_dir_compact)%f %# '
+# showing OrbStack status
+orbstack_tag() {
+  [[ "$PWD" == *"/OrbStack"* ]] && print -n "📦 "
+}
 
+# Prompt: [orbstack] [venv] [git-info] current-directory %; expansion omitted on purpose
+# shellcheck disable=SC2016
+export PROMPT='$(orbstack_tag)$(venv_tag)${vcs_info_msg_0_} %F{13}$(prompt_dir_compact)%f %# '
 
 # --- brew and brew-managed Ruby ---
 
