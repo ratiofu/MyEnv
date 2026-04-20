@@ -3,20 +3,6 @@
 # shellcheck disable=SC1090
 [[ "$TERM_PROGRAM" == "kiro" ]] && source "$(kiro --locate-shell-integration-path zsh)"
 
-# --- nvm ---
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-
-
-# --- pnpm ---
-
-export PNPM_HOME="${HOME}/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
 
 # --- Command History ---
 
@@ -128,17 +114,11 @@ orbstack_tag() {
 # shellcheck disable=SC2016
 export PROMPT='$(orbstack_tag)$(venv_tag)${vcs_info_msg_0_} %F{13}$(prompt_dir_compact)%f %# '
 
-# --- brew and brew-managed Ruby ---
-
-if type brew &>/dev/null
-then
-  export PATH="/opt/homebrew/bin:$PATH"
+# --- brew completion ---
+if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-  RUBY_PATH=$(brew --prefix ruby)
-  if [[ -d "$RUBY_PATH" ]]; then
-    export PATH="$RUBY_PATH/bin:$PATH"
-  fi
 fi
+
 
 # --- Prompt Completion ---
 autoload -Uz compinit
@@ -231,17 +211,10 @@ alias gwd='git worktree remove'
 CUSTOM_ALIASES="$HOME/.zsh_aliases"
 [[ -f "$CUSTOM_ALIASES" ]] && source "$CUSTOM_ALIASES"
 
-# --- local binaries ---
-[[ -s "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 
 # --- ngrok shell completion ---
 command -v ngrok &>/dev/null && eval "$(ngrok completion)"
 
 # --- bun completions ---
 [ -s "/Users/tj/.bun/_bun" ] && source "/Users/tj/.bun/_bun"
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 
-# --- Custom Path ---
-CUSTOM_PATHS="$HOME/.zsh_paths"
-[[ -f "$CUSTOM_PATHS" ]] && source "$CUSTOM_PATHS"

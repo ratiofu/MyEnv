@@ -16,16 +16,17 @@ This script assumes that the following are installed:
 ## Setup
 
 There is some manual work necessary, but first:
-Run the setup script to automatically create the symbolic link for `~/.zshrc`
+Run the setup script to automatically create symbolic links for `~/.zshrc` and `~/.zshenv`
 
 ```sh
 ./setup.sh
 ```
 
 This script will:
-- Create a symbolic link from `~/.zshrc` to this repo's `.zshrc`
-- Backup any existing `~/.zshrc` file to `~/.zshrc.backup`
-- Handle cases where a symlink already exists
+
+- Create symbolic links from `~/.zshrc` and `~/.zshenv` to this repo's files
+- Backup any existing `~/.zshrc` or `~/.zshenv` files to `*.backup`
+- Handle cases where symlinks already exist
 
 ### Manual Steps
 
