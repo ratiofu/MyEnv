@@ -2,6 +2,18 @@
 CUSTOM_PATHS="$HOME/.zsh_paths"
 [[ -f "$CUSTOM_PATHS" ]] && source "$CUSTOM_PATHS"
 
+# --- Homebrew ---
+typeset -U path PATH
+
+RUBY_PATH="/opt/homebrew/opt/ruby/bin"
+if [[ -d "$RUBY_PATH" ]]; then
+  path=("$RUBY_PATH" $path)
+fi
+
+if [[ -d /opt/homebrew/bin ]]; then
+  path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+fi
+
 # --- nvm ---
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
@@ -12,18 +24,6 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
-# --- brew and brew-managed Ruby ---
-if [[ -f /opt/homebrew/bin/brew ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-if type brew &>/dev/null; then
-  RUBY_PATH=$(brew --prefix ruby 2>/dev/null)
-  if [[ -d "$RUBY_PATH" ]]; then
-    export PATH="$RUBY_PATH/bin:$PATH"
-  fi
-fi
 
 # --- bun ---
 export BUN_INSTALL="$HOME/.bun"

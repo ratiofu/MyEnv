@@ -115,8 +115,8 @@ orbstack_tag() {
 export PROMPT='$(orbstack_tag)$(venv_tag)${vcs_info_msg_0_} %F{13}$(prompt_dir_compact)%f %# '
 
 # --- brew completion ---
-if type brew &>/dev/null; then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+  FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
 fi
 
 
