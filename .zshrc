@@ -192,6 +192,26 @@ git_worktree_add_wrapper() {
   fi
 }
 
+# Search for a term in files added or changed relative to a branch
+_gf_impl() {
+  local filter="$1"
+  local branch="$2"
+  local term="$3"
+
+  if [[ -z "$branch" ]]; then
+    print -P "%F{red}Error: branch name was not supplied%f"
+    return 1
+  fi
+
+  git diff -z --name-only --diff-filter="$filter" "$(git merge-base HEAD "$branch")" HEAD | xargs -0 rg "$term"
+}
+
+# Search in NEW files relative to branch
+gfnew() { _gf_impl "A" "$@"; }
+
+# Search in ALL changed files relative to branch
+gfchange() { _gf_impl "ACMR" "$@"; }
+
 # --- Aliases ---
 alias l='ls -halt'
 alias gts='git status'
