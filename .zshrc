@@ -169,9 +169,10 @@ git_worktree_add_wrapper() {
   local prefix=""
   local base_branch=""
   local stay=0
+  local branch_name=""
 
-  # Parse optional flags
-  while [[ "$1" == -* ]]; do
+  # Parse flags
+  while [[ $# -gt 0 ]]; do
     case "$1" in
       -p)
         prefix="$2"
@@ -185,14 +186,21 @@ git_worktree_add_wrapper() {
         stay=1
         shift
         ;;
-      *)
+      -*)
         echo "Error: Unknown option $1"
         return 1
         ;;
+      *)
+        if [[ -z "$branch_name" ]]; then
+          branch_name="$1"
+        else
+          echo "Error: Too many arguments: $1"
+          return 1
+        fi
+        shift
+        ;;
     esac
   done
-
-  local branch_name="$1"
 
   if [[ -z "$branch_name" ]]; then
     echo "Error: Branch name is required."
