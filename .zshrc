@@ -167,12 +167,30 @@ clrb() {
 # Wrapper for git worktree add to handle branch naming and validation
 git_worktree_add_wrapper() {
   local prefix=""
+  local base_branch=""
+  local stay=0
 
-  # Parse optional prefix flag
-  if [[ "$1" == "-p" ]]; then
-    prefix="$2"
-    shift 2
-  fi
+  # Parse optional flags
+  while [[ "$1" == -* ]]; do
+    case "$1" in
+      -p)
+        prefix="$2"
+        shift 2
+        ;;
+      -m)
+        base_branch="master"
+        shift
+        ;;
+      -s)
+        stay=1
+        shift
+        ;;
+      *)
+        echo "Error: Unknown option $1"
+        return 1
+        ;;
+    esac
+  done
 
   local branch_name="$1"
 
@@ -182,13 +200,23 @@ git_worktree_add_wrapper() {
   fi
 
   local full_name="${prefix}${branch_name}"
+  local target_dir="../${full_name}"
 
   if git rev-parse --verify "${full_name}" >/dev/null 2>&1; then
     echo "Branch '${full_name}' already exists. Adding worktree for existing branch..."
-    git worktree add "../${full_name}" "${full_name}"
+    git worktree add "${target_dir}" "${full_name}" || return 1
   else
-    echo "Creating new branch '${full_name}' and adding worktree..."
-    git worktree add "../${full_name}" -b "${full_name}"
+    if [[ -n "$base_branch" ]]; then
+      echo "Creating new branch '${full_name}' from ${base_branch} and adding worktree..."
+      git worktree add "${target_dir}" -b "${full_name}" "${base_branch}" || return 1
+    else
+      echo "Creating new branch '${full_name}' and adding worktree..."
+      git worktree add "${target_dir}" -b "${full_name}" || return 1
+    fi
+  fi
+
+  if [[ $stay -eq 0 ]]; then
+    cd "${target_dir}" || return 1
   fi
 }
 
