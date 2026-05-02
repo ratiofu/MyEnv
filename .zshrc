@@ -263,6 +263,10 @@ alias gwatj='git_worktree_add_wrapper -p dev-tj-'
 alias gwl='git worktree list'
 alias gwd='git worktree remove'
 
+q() {
+  codex exec -m gpt-5.3-codex-spark -c model_reasoning_effort=low "$@"
+}
+
 # --- Custom Aliases ---
 CUSTOM_ALIASES="$HOME/.zsh_aliases"
 [[ -f "$CUSTOM_ALIASES" ]] && source "$CUSTOM_ALIASES"
