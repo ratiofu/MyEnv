@@ -255,6 +255,7 @@ alias gti='git commit -m'
 alias gta='git add -A'
 alias gtu='git remote prune origin && git pull --all'
 alias gto='git checkout'
+alias gbd='git branch -D'
 alias loc='cloc --exclude-dir=node_modules,generated,build,build-cache,.idea,.gradle,.ci-root-home,storybook-static .'
 alias bzt='bazel test --test_output=errors --nocache_test_results'
 alias bba='bazel build //...'
@@ -264,7 +265,7 @@ alias gwl='git worktree list'
 alias gwd='git worktree remove'
 
 q() {
-  codex exec -m gpt-5.3-codex-spark -c model_reasoning_effort=low "$@"
+  claude -p --model haiku "respond to the following prompt with a single line output: $@"
 }
 
 # --- Custom Aliases ---
@@ -278,3 +279,6 @@ command -v ngrok &>/dev/null && eval "$(ngrok completion)"
 # --- bun completions ---
 [ -s "/Users/tj/.bun/_bun" ] && source "/Users/tj/.bun/_bun"
 
+# --- Environment Variables ---
+CUSTOM_ENVS="$HOME/.zsh_envs"
+[[ -f "$CUSTOM_ENVS" ]] && source "$CUSTOM_ENVS"
